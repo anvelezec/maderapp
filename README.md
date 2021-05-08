@@ -3,7 +3,7 @@ Macroscopic tree recognition model training
 
 
 # Creating a data loader. 
-Create a generator in pytorch is really simple, just need to create a class which inherits from torch.utils.data.Dataset and define three methods as seen bellow.
+Creating a generator in pytorch is really simple, just need to create a class which inherits from torch.utils.data.Dataset and define three methods as seen below.
 
 ```python
 from torch.utils.data import Dataset

@@ -28,22 +28,3 @@ class MaderAppDataset(Dataset):
             label = self.target_transform(label)
         sample = {"image": image, "label": label}
         return sample
-
-
-if __name__ == "__main__":
-    from torch.utils.data import DataLoader
-    import matplotlib.pyplot as plt
-    
-    training_data = MaderAppDataset(img_dir="training/src/data", img_size=500)
-    train_dataloader = DataLoader(training_data, batch_size=4, shuffle=True)
-    train_dataloader
-
-    images = next(iter(train_dataloader))
-    train_features, train_labels = images["image"], images["label"]
-    print(f"Feature batch shape: {train_features.size()}")
-    print(f"Labels batch shape: {train_labels.size()}")
-    img = train_features[0].squeeze().permute(1,2,0)
-    label = train_labels[0]
-    plt.imshow(img)
-    plt.show()
-    print(f"Label: {label}")
