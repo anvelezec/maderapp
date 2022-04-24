@@ -12,7 +12,7 @@ from torchvision.datasets import MNIST
 # Use training_step for training.
 
 
-class TimberEfficientNet(pl.LightningModule):
+class TimberMobileNet(pl.LightningModule):
     def __init__(self, num_classes):
         super().__init__()
 
@@ -79,7 +79,7 @@ class TimberEfficientNet(pl.LightningModule):
         y_hat = self.model(x)
         loss = F.cross_entropy(y_hat, y)
         acc = self.test_acc(y_hat, y)
-        f1score = self.train_f1score(y_hat, y)
+        f1score = self.test_f1score(y_hat, y)
 
         # logs metrics for each validation_step - [default:False]
         # the average across the epoch - [default:True]
