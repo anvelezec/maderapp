@@ -10,7 +10,7 @@ BATCH_SIZE = 4
 
 
 def batch_size_test():
-    ds = MaderappDataset("training", metadata)
+    ds = MaderappDataset("training-img", metadata)
     dl = DataLoader(ds, BATCH_SIZE)
     dataset = next(iter(dl))
     assert len(dataset) == 2

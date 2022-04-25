@@ -24,19 +24,21 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def main_trainer(metadata, model, kfold, train_trans, val_trans, model_name):
-    
+
     print(f"training fold={kfold}")
 
     # Creates dataset and dataloaders
+    train_metadata = metadata[metadata.iloc[:, 2] != kfold] if kfold else metadata
     train_ds = dataset = MaderappDataset(
         img_dir="training-img",
-        annotations_file=metadata[metadata.iloc[:, 2] != kfold],
+        annotations_file=train_metadata,
         transform=train_trans,
     )
 
+    val_metadata = metadata[metadata.iloc[:, 2] == kfold] if kfold else metadata
     val_ds = dataset = MaderappDataset(
         img_dir="training-img",
-        annotations_file=metadata[metadata.iloc[:, 2] == kfold],
+        annotations_file=val_metadata,
         transform=val_trans,
     )
 
@@ -78,8 +80,9 @@ def main_trainer(metadata, model, kfold, train_trans, val_trans, model_name):
                 for path, pred in zip(test_pred[0], test_pred[1]):
                     file.write(f"{path}, {class_ids2names[pred]} \n")
 
+
 if __name__ == "__main__":
-    metadata = pd.read_csv("metadata.csv")
+    metadata = pd.read_csv("metadata.csv", header=None)
     class_names = sorted(metadata.iloc[:, 1].value_counts().index)
     class_names2ids = {j: i for i, j in enumerate(class_names)}
     class_ids2names = {j: i for i, j in class_names2ids.items()}
@@ -109,7 +112,20 @@ if __name__ == "__main__":
         ]
     )
 
+    """    
     for kfold in range(4):
         # Load model
         model = TimberMobileNet(num_classes=out_features)
         main_trainer(metadata, model, kfold, train_trans, val_trans, model_name="MobileNet")
+    """
+
+    from maderapp.timber_clasification_efficientNet import TimberEfficientNet
+    from maderapp.timber_clasification_efficientNetNS import TimberEfficientNetNS
+    from maderapp.timber_clasification_mobileNet import TimberMobileNet
+
+    for model_class, model_name in zip(
+        [TimberEfficientNet, TimberEfficientNetNS, TimberMobileNet],
+        ["efficientNet", "efficientNet-NS", "MobileNet"],
+    ):
+        model = model_class(num_classes=out_features)
+        main_trainer(metadata, model, None, train_trans, val_trans, model_name)
