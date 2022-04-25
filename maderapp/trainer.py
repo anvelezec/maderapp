@@ -61,7 +61,7 @@ def main_trainer(metadata, model, kfold, train_trans, val_trans, model_name):
     # Train model
     trainer = pl.Trainer(
         gpus=1,
-        max_epochs=250,
+        max_epochs=15,
         check_val_every_n_epoch=2,
         logger=logger,
         callbacks=[checkpoint_callback],
@@ -125,7 +125,7 @@ if __name__ == "__main__":
 
     for model_class, model_name in zip(
         [TimberEfficientNet, TimberEfficientNetNS, TimberMobileNet],
-        ["efficientNet", "efficientNet-NS", "MobileNet"],
+        ["efficientNet_15", "efficientNet-NS_15", "MobileNet_15"],
     ):
         model = model_class(num_classes=out_features)
         main_trainer(metadata, model, None, train_trans, val_trans, model_name)
