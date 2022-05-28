@@ -9,7 +9,7 @@ from PIL import Image
 from torch.utils.data import Dataset
 from torchvision.transforms import ToTensor
 
-metadata = pd.read_csv("metadata.csv", header=None)
+metadata = pd.read_csv("../metadata.csv", header=None)
 class_names = sorted(metadata[1].value_counts().index)
 class_names2ids = {j: i for i, j in enumerate(class_names)}
 
