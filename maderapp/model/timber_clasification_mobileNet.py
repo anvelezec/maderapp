@@ -12,7 +12,7 @@ from torchvision.datasets import MNIST
 # Use training_step for training.
 
 
-class TimberResNet(pl.LightningModule):
+class TimberMobileNet(pl.LightningModule):
     def __init__(self, num_classes):
         super().__init__()
 
@@ -22,14 +22,14 @@ class TimberResNet(pl.LightningModule):
         self.train_f1score = torchmetrics.F1Score(num_classes=num_classes)
         self.test_f1score = torchmetrics.F1Score(num_classes=num_classes)
         self.softmax = torch.nn.Softmax()
-        
-        self.model = timm.create_model("resnet50", pretrained=True)
+
+        self.model = timm.create_model("mobilenetv2_100", pretrained=True)
 
         for param in self.model.parameters():
             param.requires_grad = False
 
-        in_features = self.model.fc.in_features
-        self.model.fc = nn.Linear(in_features, num_classes)
+        in_features = self.model.classifier.in_features
+        self.model.classifier = nn.Linear(in_features, num_classes)
 
         trainable_total_params = sum(
             p.numel() for p in self.model.parameters() if p.requires_grad
