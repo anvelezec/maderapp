@@ -22,7 +22,7 @@ class TimberEfficientNetNS(pl.LightningModule):
         self.train_f1score = torchmetrics.F1Score(num_classes=num_classes)
         self.test_f1score = torchmetrics.F1Score(num_classes=num_classes)
         self.softmax = torch.nn.Softmax()
-        
+
         self.model = timm.create_model("tf_efficientnet_b0_ns", pretrained=True)
 
         for param in self.model.parameters():
