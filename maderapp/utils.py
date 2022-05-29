@@ -19,6 +19,7 @@ def show(imgs):
 def pytorch_model_to_mobile(model_class, num_classes, load_path, save_path):
     model = model_class.load_from_checkpoint(load_path, num_classes=num_classes)
     model.eval()
+    model.cpu()
     scriptedm = torch.jit.script(model)
     torch.jit.save(scriptedm, save_path)
 
@@ -26,6 +27,7 @@ def pytorch_model_to_mobile(model_class, num_classes, load_path, save_path):
 def pytorch_model_trace_to_mobile(model_class, num_classes, load_path, save_path):
     model = model_class.load_from_checkpoint(load_path, num_classes=num_classes)
     model.eval()
+    model.cpu()
     input = torch.rand(1, 3, 224, 224)
     scriptedm = torch.jit.trace(model, input)
     torch.jit.save(scriptedm, save_path)
@@ -38,6 +40,7 @@ def pytorch_model_trace_to_mobile_optim(model_class, num_classes, load_path, sav
     # model = torchvision.models.mobilenet_v2(pretrained=True)
     model = model_class.load_from_checkpoint(load_path, num_classes=num_classes)
     model.eval()
+    model.cpu()
     example = torch.rand(1, 3, 224, 224)
     traced_script_module = torch.jit.trace(model, example)
     traced_script_module_optimized = optimize_for_mobile(traced_script_module)
