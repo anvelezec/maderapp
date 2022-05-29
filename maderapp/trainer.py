@@ -13,6 +13,9 @@ from maderapp.data.data_inference import MaderappDatasetInference
 def trainer(
     metadata: pd.DataFrame,
     img_dir: str,
+    img_dir_val: str,
+    model_checkpoint_dir: str, 
+    logs_folder_dir: str,
     model: pl.LightningModule,
     kfold: int,
     train_trans: Compose,
@@ -22,7 +25,6 @@ def trainer(
     max_epochs: int,
     validation: bool,
     device: str,
-    logs_folder: str,
 ):
 
     class_names = sorted(metadata.iloc[:, 1].value_counts().index)
@@ -52,7 +54,7 @@ def trainer(
     val_dl = DataLoader(val_ds, batch_size=batch_size, shuffle=False, num_workers=4)
 
     # Sets logs configuration
-    logger = TensorBoardLogger(f"{logs_folder}/{kfold}", name=model_name)
+    logger = TensorBoardLogger(f"{logs_folder_dir}/{kfold}", name=model_name)
 
     # Checkpointing
     # saves top-K checkpoints based on "val_loss" metric
@@ -60,7 +62,7 @@ def trainer(
         save_top_k=10,
         monitor="val_loss",
         mode="min",
-        dirpath=f"model_checkpoint/{kfold}/{model_name}",
+        dirpath=f"{model_checkpoint_dir}/{kfold}/{model_name}",
         filename="maderapp-{epoch:02d}-{val_loss:.2f}",
     )
 
@@ -77,7 +79,7 @@ def trainer(
     trainer.fit(model=model, train_dataloaders=train_dl, val_dataloaders=val_dl)
 
     if validation:
-        metadata = [str(path) for path in list(Path("validation").glob("*.jpg"))]
+        metadata = [str(path) for path in list(Path(img_dir_val).glob("*.jpg"))]
         ds = MaderappDatasetInference(annotations_file=metadata)
         dl = DataLoader(ds, batch_size=64, shuffle=False, num_workers=4)
         test_preds = trainer.predict(model=model, dataloaders=dl)
