@@ -25,16 +25,22 @@ def trainer(
     max_epochs: int,
     validation: bool,
     device: str,
+    checkpoint_callback_monitor: str
 ):
 
     class_names = sorted(metadata.iloc[:, 1].value_counts().index)
     class_names2ids = {j: i for i, j in enumerate(class_names)}
     class_ids2names = {j: i for i, j in class_names2ids.items()}
 
-    print(f"training fold={kfold}")
+    if kfold is not None:
+        print(f"training fold={kfold}")
+
+        train_metadata = metadata[metadata.iloc[:, 2] != kfold] if kfold else metadata
+        val_metadata = metadata[metadata.iloc[:, 2] == kfold] if kfold else metadata
+    else:
+        train_metadata = val_metadata = metadata
 
     # Creates dataset and dataloaders
-    train_metadata = metadata[metadata.iloc[:, 2] != kfold] if kfold else metadata
     train_ds = MaderappDataset(
         img_dir=img_dir,
         annotations_file=train_metadata,
@@ -42,13 +48,12 @@ def trainer(
         transform=train_trans,
     )
 
-    val_metadata = metadata[metadata.iloc[:, 2] == kfold] if kfold else metadata
     val_ds = MaderappDataset(
-        img_dir=img_dir,
-        annotations_file=val_metadata,
-        class_names2ids=class_names2ids,
-        transform=val_trans,
-    )
+            img_dir=img_dir,
+            annotations_file=val_metadata,
+            class_names2ids=class_names2ids,
+            transform=val_trans,
+        )
 
     train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True, num_workers=4)
     val_dl = DataLoader(val_ds, batch_size=batch_size, shuffle=False, num_workers=4)
@@ -60,7 +65,7 @@ def trainer(
     # saves top-K checkpoints based on "val_loss" metric
     checkpoint_callback = ModelCheckpoint(
         save_top_k=10,
-        monitor="val_loss",
+        monitor=checkpoint_callback_monitor,
         mode="min",
         dirpath=f"{model_checkpoint_dir}/{kfold}/{model_name}",
         filename="maderapp-{epoch:02d}-{val_loss:.2f}",
