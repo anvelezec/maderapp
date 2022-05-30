@@ -86,8 +86,15 @@ Residual NN with patches
 ## Training
 Look a the folder train_executions for training examples with fold partirion and full images.
 
-```python
-in_channels = 3
-depth_conv = Conv2d(in_channels=in_channels, out_channels=in_channels, kernel_size=3, groups=in_channels)
-```
+## Results
 
+The results of the experiments are summarised in the table below. The F1-Scores were
+scaled by 100 to contrast the values. 
+
+| Model              | fold-1 | fold-2 | fold-3 | fold-4 | test  |
+|--------------------|--------|--------|--------|--------|-------|
+| Patches-ResNet     | 99.24  | 98.97  | 99.32  | 99.41  | 99.90 |
+| MobileNetV2        | 99.29  | 99.49  | 99.43  | 99.21  | 99.50 |
+| EfficientNet-B0    | 99.24  | 99.01  | 99.34  | 99.38  | 99.60 |
+| EfficientNet-B0-NS | 99.21  | 99.08  | 99.05  | 98.97  | 92.60 |
+| RestNet            | 98.91  | 98.81  | 98.94  | 98.63  | 99.00 |
