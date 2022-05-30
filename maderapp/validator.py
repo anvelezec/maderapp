@@ -31,4 +31,3 @@ def validator(trainer, model, model_name, class_ids2names):
         for test_pred in test_preds:
             for path, pred in zip(test_pred[0], test_pred[1]):
                 file.write(f"{path}, {class_ids2names[pred]} \n")
-

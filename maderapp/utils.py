@@ -27,7 +27,9 @@ def show(imgs: list):
         axs[0, i].set(xticklabels=[], yticklabels=[], xticks=[], yticks=[])
 
 
-def pytorch_model_to_mobile(model_class: str, num_classes:int , load_path:str, save_path:str):
+def pytorch_model_to_mobile(
+    model_class: str, num_classes: int, load_path: str, save_path: str
+):
     model = model_class.load_from_checkpoint(load_path, num_classes=num_classes)
     model.eval()
     model.cpu()
@@ -35,7 +37,9 @@ def pytorch_model_to_mobile(model_class: str, num_classes:int , load_path:str, s
     torch.jit.save(scriptedm, save_path)
 
 
-def pytorch_model_trace_to_mobile(model_class: str, num_classes:int , load_path:str, save_path:str):
+def pytorch_model_trace_to_mobile(
+    model_class: str, num_classes: int, load_path: str, save_path: str
+):
     model = model_class.load_from_checkpoint(load_path, num_classes=num_classes)
     model.eval()
     model.cpu()
@@ -44,8 +48,10 @@ def pytorch_model_trace_to_mobile(model_class: str, num_classes:int , load_path:
     torch.jit.save(scriptedm, save_path)
 
 
-def pytorch_model_trace_to_mobile_optim(model_class: str, num_classes:int , load_path:str, save_path:str):
-    
+def pytorch_model_trace_to_mobile_optim(
+    model_class: str, num_classes: int, load_path: str, save_path: str
+):
+
     model = model_class.load_from_checkpoint(load_path, num_classes=num_classes)
     model.eval()
     model.cpu()

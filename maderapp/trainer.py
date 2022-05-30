@@ -15,7 +15,7 @@ def trainer(
     metadata: pd.DataFrame,
     img_dir: str,
     img_dir_val: str,
-    model_checkpoint_dir: str, 
+    model_checkpoint_dir: str,
     logs_folder_dir: str,
     model: pl.LightningModule,
     kfold: int,
@@ -26,7 +26,7 @@ def trainer(
     max_epochs: int,
     validation: bool,
     device: str,
-    checkpoint_callback_monitor: str
+    checkpoint_callback_monitor: str,
 ):
 
     class_names = sorted(metadata.iloc[:, 1].value_counts().index)
@@ -50,11 +50,11 @@ def trainer(
     )
 
     val_ds = MaderappDataset(
-            img_dir=img_dir,
-            annotations_file=val_metadata,
-            class_names2ids=class_names2ids,
-            transform=val_trans,
-        )
+        img_dir=img_dir,
+        annotations_file=val_metadata,
+        class_names2ids=class_names2ids,
+        transform=val_trans,
+    )
 
     train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True, num_workers=4)
     val_dl = DataLoader(val_ds, batch_size=batch_size, shuffle=False, num_workers=4)
