@@ -81,3 +81,13 @@ point_conv = Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_s
 
 In this work, we focus on the following models: MobileNetV2, EfficientNet-B0,
 Residual NN with patches
+
+
+## Training
+Look a the folder train_executions for training examples with fold partirion and full images.
+
+```python
+in_channels = 3
+depth_conv = Conv2d(in_channels=in_channels, out_channels=in_channels, kernel_size=3, groups=in_channels)
+```
+

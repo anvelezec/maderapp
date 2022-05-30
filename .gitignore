@@ -1,12 +1,5 @@
 # Folders
-training/data/*
-train-dev/
-_train-dev/
-training/
-training-img/
-validation/
-model_logs/
-model_checkpoint/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
