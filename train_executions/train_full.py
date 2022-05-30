@@ -1,16 +1,11 @@
-import torch
-import pandas as pd
 import albumentations as A
+import pandas as pd
+import torch
 from albumentations.pytorch import ToTensorV2
 
-from maderapp.model import (
-    TimberEfficientNet,
-    TimberEfficientNetNS,
-    TimberMobileNet,
-    TimberResNet,
-)
+from maderapp.model import (TimberEfficientNet, TimberEfficientNetNS,
+                            TimberMobileNet, TimberResNet)
 from maderapp.trainer import trainer
-
 
 metadata = pd.read_csv("metadata.csv", header=None)
 

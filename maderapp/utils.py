@@ -1,9 +1,10 @@
 # import tensorflow as tf
-import torch
-import numpy as np
-import matplotlib.pyplot as plt
-import torchvision.transforms.functional as F
 from datetime import datetime
+
+import matplotlib.pyplot as plt
+import numpy as np
+import torch
+import torchvision.transforms.functional as F
 from torch.utils.mobile_optimizer import optimize_for_mobile
 
 
@@ -70,4 +71,3 @@ def tensorflow_model_to_mobile(load_path, save_path):
     # Save the model.
     with open(save_path, "wb") as f:
         f.write(tflite_model)
-

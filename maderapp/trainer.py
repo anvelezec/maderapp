@@ -1,10 +1,11 @@
+from pathlib import Path
+
 import pandas as pd
 import pytorch_lightning as pl
+from albumentations.core.composition import Compose
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from torch.utils.data import DataLoader
-from pathlib import Path
-from albumentations.core.composition import Compose
 
 from maderapp.data.data import MaderappDataset
 from maderapp.data.data_inference import MaderappDatasetInference
