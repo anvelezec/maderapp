@@ -52,16 +52,19 @@ for kfold in range(4):
     # Load model
     model = TimberMobileNet(num_classes=OUT_FEATURES)
     trainer(
-        metadata,
-        "../data_maderapp/training-img",
-        model,
-        kfold,
-        train_trans,
-        val_trans,
-        "MobileNet",
-        BATCH_SIZE,
-        NUM_EPOCHS,
-        VALIDATION,
-        DEVICE,
-        "../data_madetapp/model_logs",
+        metadata=metadata,
+        img_dir="../data_maderapp/training-img",
+        img_dir_val="../data_maderapp/validation",
+        model_checkpoint_dir="../data_maderapp/checkpoints-v1",
+        logs_folder_dir="../data_madetapp/model_logs",
+        model=model,
+        kfold=kfold,
+        train_trans=train_trans,
+        val_trans=val_trans,
+        model_name="MobileNet",
+        batch_size=BATCH_SIZE,
+        max_epochs=NUM_EPOCHS,
+        validation=VALIDATION,
+        device=DEVICE,
+        checkpoint_callback_monitor="val_loss"
     )
