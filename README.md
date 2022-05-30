@@ -3,21 +3,21 @@ The correct identification of timber species is a complicated task for the
 wood industry and government institutions regulating the different laws
 that ensure legal and transparent commerce. Currently, experts perform
 this process using the organoleptic characteristics of the wood. However,
-the methodology used is time-consuming and limited to environmen-
-tal conditions. Moreover, it has a scalability issue since acquiring this
+the methodology used is time-consuming and limited to environmental conditions. 
+Moreover, it has a scalability issue since acquiring this
 specific knowledge and experience has a slow learning curve. On the
 other hand, deep learning models have evolved as possible solutions for
-process automation. Therefore, this paper explores convolutional neu-
-ral network models suited to run on edge devices. The present study
+process automation. Therefore, this paper explores convolutional neural 
+network models suited to run on edge devices. The present study
 created a database with 25k images of 25 timber species from the
 Peruvian Amazon. We trained-validated multiple lightweight models
 (less than 5M). The experiments were made using a repeated stratified
  k-fold cross-validation approach to estimate the performance of
 the classifiers. The experiments show that the best model has an F1
-score metric of 99.90% and 58ms latency using 561k parameters. Fur-
-thermore, the created model showed an excellent ability to identify
-species, opening up space for future integration with mobile appli-
-cations, which helps minimize the time spent and the identification
+score metric of 99.90% and 58ms latency using 561k parameters. Furthermore, 
+the created model showed an excellent ability to identify
+species, opening up space for future integration with mobile applications, 
+which helps minimize the time spent and the identification
 errors on timber identification carried out by experts on control points.
 
 ## Data
