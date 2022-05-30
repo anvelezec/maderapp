@@ -1,5 +1,6 @@
 # Folders
-training/data/*
+
+metadata.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
