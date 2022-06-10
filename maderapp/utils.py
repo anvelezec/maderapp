@@ -1,4 +1,4 @@
-import tensorflow as tf
+# import tensorflow as tf
 import torch
 
 
@@ -8,12 +8,14 @@ def pytorch_model_to_mobile(model_class, num_classes, load_path, save_path):
     scriptedm = torch.jit.script(model)
     torch.jit.save(scriptedm, save_path)
 
+
 def pytorch_model_trace_to_mobile(model_class, num_classes, load_path, save_path):
     model = model_class.load_from_checkpoint(load_path, num_classes=num_classes)
     model.eval()
     input = torch.rand(1, 3, 224, 224)
     scriptedm = torch.jit.trace(model, input)
     torch.jit.save(scriptedm, save_path)
+
 
 def tensorflow_model_to_mobile(load_path, save_path):
 
@@ -34,14 +36,18 @@ def tensorflow_model_to_mobile(load_path, save_path):
 
 
 if __name__ == "__main__":
-    from maderapp.timber_clasification_efficientNetNS import TimberEfficientNetNS
+    from maderapp.timber_clasification_efficientNet import TimberEfficientNet
 
-    """pytorch_model_to_mobile(
-        model_class=TimberEfficientNetNS,
+    model = TimberEfficientNet(num_classes=25)
+    model.load_state_dict(torch.load("maderapp-epoch=249-val_loss=0.00.ckpt"))
+    model.eval()
+
+    pytorch_model_to_mobile(
+        model_class=TimberEfficientNet,
         num_classes=25,
-        load_path="model_checkpoint/0/efficientNet/maderapp-epoch=249-val_loss=0.02.ckpt",
+        load_path="maderapp-epoch=249-val_loss=0.00.ckpt",
         save_path="mobile_models/efficientNet.pt",
-    )"""
+    )
 
     """pytorch_model_to_mobile(
         model_class=TimberEfficientNetNS,
