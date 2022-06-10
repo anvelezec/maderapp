@@ -13,10 +13,7 @@ def validator(trainer, model, model_name, class_ids2names):
     transformation = A.Compose(
         [
             A.Resize(224, 224),
-            A.Normalize(
-                mean=[0.485, 0.456, 0.406],
-                std=[0.229, 0.224, 0.225],
-            ),
+            A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225],),
             ToTensorV2(),
         ]
     )
@@ -43,9 +40,7 @@ if __name__ == "__main__":
     )
     model.eval()
 
-    trainer = pl.Trainer(
-        gpus=1,
-    )
+    trainer = pl.Trainer(gpus=1,)
 
     metadata = pd.read_csv("metadata.csv", header=None)
     class_names = sorted(metadata.iloc[:, 1].value_counts().index)

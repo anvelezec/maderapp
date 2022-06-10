@@ -30,16 +30,12 @@ def main_trainer(metadata, model, kfold, train_trans, val_trans, model_name):
     # Creates dataset and dataloaders
     train_metadata = metadata[metadata.iloc[:, 2] != kfold] if kfold else metadata
     train_ds = dataset = MaderappDataset(
-        img_dir="training-img",
-        annotations_file=train_metadata,
-        transform=train_trans,
+        img_dir="training-img", annotations_file=train_metadata, transform=train_trans,
     )
 
     val_metadata = metadata[metadata.iloc[:, 2] == kfold] if kfold else metadata
     val_ds = dataset = MaderappDataset(
-        img_dir="training-img",
-        annotations_file=val_metadata,
-        transform=val_trans,
+        img_dir="training-img", annotations_file=val_metadata, transform=val_trans,
     )
 
     train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True, num_workers=4)
@@ -93,10 +89,7 @@ if __name__ == "__main__":
             A.RandomCrop(width=224, height=224),
             A.HorizontalFlip(p=0.5),
             A.RandomBrightnessContrast(p=0.2),
-            A.Normalize(
-                mean=[0.485, 0.456, 0.406],
-                std=[0.229, 0.224, 0.225],
-            ),
+            A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225],),
             ToTensorV2(),
         ]
     )
@@ -104,10 +97,7 @@ if __name__ == "__main__":
     val_trans = A.Compose(
         [
             A.Resize(224, 224),
-            A.Normalize(
-                mean=[0.485, 0.456, 0.406],
-                std=[0.229, 0.224, 0.225],
-            ),
+            A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225],),
             ToTensorV2(),
         ]
     )
