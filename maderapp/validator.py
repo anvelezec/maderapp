@@ -9,16 +9,14 @@ from torch.utils.data import DataLoader
 from maderapp.data.data_inference import MaderappDatasetInference
 
 
+
 def validator(trainer, model, model_name, class_ids2names):
     metadata = [str(path) for path in list(Path("validation").glob("*.jpg"))]
 
     transformation = A.Compose(
         [
             A.Resize(224, 224),
-            A.Normalize(
-                mean=[0.485, 0.456, 0.406],
-                std=[0.229, 0.224, 0.225],
-            ),
+            A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225],),
             ToTensorV2(),
         ]
     )

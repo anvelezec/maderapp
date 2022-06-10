@@ -10,7 +10,7 @@ metadata = pd.read_csv("metadata.csv")
 BATCH_SIZE = 4
 
 
-def batch_size_test():
+def test_batch_size():
     ds = MaderappDataset("training-img", metadata)
     dl = DataLoader(ds, BATCH_SIZE)
     dataset = next(iter(dl))
@@ -18,7 +18,7 @@ def batch_size_test():
     assert len(dataset[0]) == BATCH_SIZE
 
 
-def inference_dataloader_test():
+def test_inference_dataloader():
     metadata = [str(path) for path in list(Path("validation").glob("*.jpg"))]
     ds = MaderappDatasetInference(metadata)
     dl = DataLoader(ds, BATCH_SIZE)
