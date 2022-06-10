@@ -21,6 +21,7 @@ class TimberEfficientNet(pl.LightningModule):
 
         self.train_f1score = torchmetrics.F1Score(num_classes=num_classes)
         self.test_f1score = torchmetrics.F1Score(num_classes=num_classes)
+        self.softmax = torch.nn.Softmax()
 
         self.model = timm.create_model("efficientnet_b0", pretrained=True)
 
@@ -43,7 +44,7 @@ class TimberEfficientNet(pl.LightningModule):
 
     def forward(self, x):
         out = self.model(x)
-        return out
+        return self.softmax(out)
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-4)

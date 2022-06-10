@@ -1,9 +1,10 @@
 from pathlib import Path
+
 import pandas as pd
 from torch.utils.data import DataLoader
 
-from maderapp.data import MaderappDataset
-from maderapp.data_inference import MaderappDatasetInference
+from maderapp.data.data import MaderappDataset
+from maderapp.data.data_inference import MaderappDatasetInference
 
 metadata = pd.read_csv("metadata.csv")
 BATCH_SIZE = 4
