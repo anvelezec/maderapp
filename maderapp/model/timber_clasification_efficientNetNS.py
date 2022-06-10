@@ -4,9 +4,6 @@ import torch
 import torch.nn.functional as F
 import torchmetrics
 from torch import nn
-from torch.utils.data import DataLoader, random_split
-from torchvision import transforms
-from torchvision.datasets import MNIST
 
 # Use forward for inference (predicting).
 # Use training_step for training.

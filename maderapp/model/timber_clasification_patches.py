@@ -1,13 +1,13 @@
-from turtle import forward
-import torch
-from torch.nn import Conv2d, LeakyReLU, Sequential, MaxPool2d, Module, Linear, ReLU
 import pytorch_lightning as pl
-import torchmetrics
+import torch
 import torch.nn.functional as F
+import torchmetrics
+from torch.nn import (Conv2d, LeakyReLU, Linear, MaxPool2d, Module, ReLU,
+                      Sequential)
 
 
 class ResidualBlock(Module):
-    def __init__(self, in_channels, out_channels, kernel_size) -> None:
+    def __init__(self, in_channels: int, out_channels: int, kernel_size: int) -> None:
         super().__init__()
         self.conv = Conv2d(
             in_channels=in_channels,
@@ -19,7 +19,7 @@ class ResidualBlock(Module):
         self.act = LeakyReLU()
         self.model = Sequential(self.conv, self.act, self.conv)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor):
         shortcut = x
         x = self.model(x)
         x = torch.add(x, shortcut)
@@ -27,29 +27,31 @@ class ResidualBlock(Module):
 
 
 class ActPool(Module):
-    def __init__(self, negative_slope=0.1, max_pool_kernel_size=2) -> None:
+    def __init__(
+        self, negative_slope: float = 0.1, max_pool_kernel_size: int = 2
+    ) -> None:
         super().__init__()
         self.act = LeakyReLU(negative_slope)
         self.max_pool = MaxPool2d(max_pool_kernel_size)
         self.model = Sequential(self.act, self.max_pool)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor):
         x = self.model(x)
         return x
 
 
 class Flatten(Module):
-    def __init__(self, start_dim, end_dim) -> None:
+    def __init__(self, start_dim: int, end_dim: int) -> None:
         super().__init__()
         self.start_dim = start_dim
         self.end_dim = end_dim
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor):
         return torch.flatten(x, self.start_dim, self.end_dim)
 
 
 class LinearBlock(Module):
-    def __init__(self, in_features, out_features) -> None:
+    def __init__(self, in_features: int, out_features: int) -> None:
         super().__init__()
 
         self.linear1 = Linear(in_features=in_features, out_features=256)
@@ -57,13 +59,13 @@ class LinearBlock(Module):
         self.relu = ReLU()
         self.model = Sequential(self.linear1, self.relu, self.linear2)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor):
         x = self.model(x)
         return x
 
 
 class TimberPatchesNet(pl.LightningModule):
-    def __init__(self, num_classes) -> None:
+    def __init__(self, num_classes: int) -> None:
         super().__init__()
 
         self.train_acc = torchmetrics.Accuracy()
@@ -87,7 +89,7 @@ class TimberPatchesNet(pl.LightningModule):
         model.extend([self.flatten, self.linear])
         self.model = Sequential(*model)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor):
         x = self.model(x)
         return x
 
@@ -95,7 +97,7 @@ class TimberPatchesNet(pl.LightningModule):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-4)
         return optimizer
 
-    def step(self, batch, mode):
+    def step(self, batch, mode: str):
         x, y = batch[0], batch[1]
         y_hat = self.model(x)
 
