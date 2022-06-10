@@ -1,5 +1,8 @@
 import torch
-from maderapp.model.timber_clasification_patches import ResidualBlock, ActPool, TimberPatchesNet
+
+from maderapp.model.timber_clasification_patches import (ActPool,
+                                                         ResidualBlock,
+                                                         TimberPatchesNet)
 
 
 def test_residual_block():
@@ -18,7 +21,7 @@ def test_act_pool():
 
 def test_patch_model():
     input_tensor = torch.randn(2, 3, 64, 64)
-    num_classes=20
+    num_classes = 20
     tp = TimberPatchesNet(num_classes=num_classes)
     output_tensor = tp(input_tensor)
     assert output_tensor.shape[-1] == num_classes

@@ -1,16 +1,12 @@
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from PIL import Image
-from pathlib import Path
-import matplotlib.pyplot as plt
-from sklearn.metrics import (
-    f1_score,
-    accuracy_score,
-    precision_score,
-    recall_score,
-    confusion_matrix,
-)
+from sklearn.metrics import (accuracy_score, confusion_matrix, f1_score,
+                             precision_score, recall_score)
 from tqdm import tqdm
-import numpy as np
 
 path = "."
 model = "RestNet"
