@@ -62,7 +62,7 @@ class LinearBlock(Module):
         return x
 
 
-class TimberPatch(pl.LightningModule):
+class TimberPatchesNet(pl.LightningModule):
     def __init__(self, num_classes) -> None:
         super().__init__()
 
