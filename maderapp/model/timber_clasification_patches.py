@@ -2,8 +2,8 @@ import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
 import torchmetrics
-from torch.nn import (Conv2d, LeakyReLU, Linear, MaxPool2d, Module, ReLU,
-                      Sequential)
+from torch.nn import Conv2d, LeakyReLU, Linear, MaxPool2d, Module, ReLU, Sequential
+from torch.optim import StepLR
 
 
 class ResidualBlock(Module):
@@ -90,12 +90,14 @@ class TimberPatchesNet(pl.LightningModule):
         self.model = Sequential(*model)
 
     def forward(self, x: torch.Tensor):
-        x = self.model(x)
-        return x
+        out = self.model(x)
+        out = self.softmax(out)
+        return out
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=1e-4)
-        return optimizer
+        optimizer = torch.optim.Adam(self.parameters(), lr=1e-2)
+        scheduler = StepLR(optimizer, step_size=500, gamma=0.1)
+        return optimizer, scheduler
 
     def step(self, batch, mode: str):
         x, y = batch[0], batch[1]
