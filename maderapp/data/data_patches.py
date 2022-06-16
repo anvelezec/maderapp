@@ -22,6 +22,7 @@ class MaderappPatchesDataset(Dataset):
         annotations_file,
         class_names2ids,
         patches_kernel,
+        patches_shuffle=None,
         transform=None,
         target_transform=None,
     ) -> None:
@@ -31,6 +32,7 @@ class MaderappPatchesDataset(Dataset):
         self.target_transform = target_transform
         self.class_names2ids = class_names2ids
         self.patches_kernel = patches_kernel
+        self.patches_shuffle = patches_shuffle
 
     def __len__(self):
         return len(self.annotations_file)
@@ -65,6 +67,10 @@ class MaderappPatchesDataset(Dataset):
                 )
                 patch_images.append(image.unsqueeze(dim=0))
             patch_images = torch.concat(patch_images, dim=0)
+
+            if self.patches_shuffle:
+                idx = torch.randperm(patch_images.shape[0])
+                patch_images = patch_images[idx, :]
 
         if self.target_transform:
             labels = self.target_transform(labels)
