@@ -39,7 +39,7 @@ def trainer(
         val_metadata = metadata[metadata.iloc[:, 2] == kfold]
     else:
         print(f"train:0-val:1 schema")
-        train_metadata = metadata[metadata.iloc[:, 2] != 0]
+        train_metadata = metadata[metadata.iloc[:, 2] == 0]
         val_metadata = metadata[metadata.iloc[:, 2] == 1]
 
     # Creates dataset and dataloaders
