@@ -35,11 +35,12 @@ def trainer(
 
     if kfold is not None:
         print(f"training fold={kfold}")
-
-        train_metadata = metadata[metadata.iloc[:, 2] != kfold] if kfold else metadata
-        val_metadata = metadata[metadata.iloc[:, 2] == kfold] if kfold else metadata
+        train_metadata = metadata[metadata.iloc[:, 2] != kfold]
+        val_metadata = metadata[metadata.iloc[:, 2] == kfold]
     else:
-        train_metadata = val_metadata = metadata
+        print(f"train:0-val:1 schema")
+        train_metadata = metadata[metadata.iloc[:, 2] != 0]
+        val_metadata = metadata[metadata.iloc[:, 2] == 1]
 
     # Creates dataset and dataloaders
     train_ds = MaderappDataset(
