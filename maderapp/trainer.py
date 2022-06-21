@@ -33,6 +33,10 @@ def trainer(
     class_names2ids = {j: i for i, j in enumerate(class_names)}
     class_ids2names = {j: i for i, j in class_names2ids.items()}
 
+    with open(f"{model_checkpoint_dir}/labels.csv", "w") as file:
+        for specie, index in class_names2ids.items():
+            file.write(f"{specie};{index} \n")
+            
     if kfold is not None:
         print(f"training fold={kfold}")
         train_metadata = metadata[metadata.iloc[:, 2] != kfold]
