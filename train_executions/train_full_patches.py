@@ -61,4 +61,6 @@ trainer(
     max_epochs=NUM_EPOCHS,
     validation=VALIDATION,
     device=DEVICE,
-    checkpoint_callback_monitor="val_loss")
+    checkpoint_callback_monitor="val_loss",
+    patches_params= {"patches_kernel": 64}
+)
