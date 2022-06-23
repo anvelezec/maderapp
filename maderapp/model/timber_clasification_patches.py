@@ -65,9 +65,10 @@ class LinearBlock(Module):
 
 
 class TimberPatchesNet(pl.LightningModule):
-    def __init__(self, num_classes: int) -> None:
+    def __init__(self, num_classes: int, patches_kernel: int) -> None:
         super().__init__()
 
+        self.patches_kernel = patches_kernel
         self.train_acc = torchmetrics.Accuracy()
         self.test_acc = torchmetrics.Accuracy()
 
@@ -97,12 +98,14 @@ class TimberPatchesNet(pl.LightningModule):
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-2)
         scheduler = StepLR(optimizer, step_size=500, gamma=0.1)
-        return optimizer, scheduler
+        return {"optimizer": optimizer, "lr_scheduler": scheduler}
 
     def step(self, batch, mode: str):
         x, y = batch[0], batch[1]
-        y_hat = self.model(x)
+        x = x.reshape(-1, x.shape[2], self.patches_kernel, self.patches_kernel)
+        y = y.reshape(-1)
 
+        y_hat = self.model(x)
         loss = F.cross_entropy(y_hat, y)
         acc = self.train_acc(y_hat, y)
         f1score = self.train_f1score(y_hat, y)
