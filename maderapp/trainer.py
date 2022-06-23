@@ -36,7 +36,7 @@ def trainer(
     with open(f"{model_checkpoint_dir}/labels.csv", "w") as file:
         for specie, index in class_names2ids.items():
             file.write(f"{specie};{index} \n")
-            
+    
     if kfold is not None:
         print(f"training fold={kfold}")
         train_metadata = metadata[metadata.iloc[:, 2] != kfold]

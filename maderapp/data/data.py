@@ -33,20 +33,25 @@ class MaderappDataset(Dataset):
             self.img_dir, self.annotations_file.iloc[index, 0]
         )
 
-        image = Image.open(img_metadata_path).convert("RGB")
-        label_name = self.annotations_file.iloc[index, 1]
-        label = self.class_names2ids[label_name]
+        try:
+            image = Image.open(img_metadata_path).convert("RGB")
+            label_name = self.annotations_file.iloc[index, 1]
+            label = self.class_names2ids[label_name]
 
-        if self.transform:
-            image = (
-                self.transform(image=np.array(image))["image"]
-                if isinstance(self.transform, Acompose)
-                else self.transform(image)
-            )
-        else:
-            image = ToTensor()(image)
+            if self.transform:
+                image = (
+                    self.transform(image=np.array(image))["image"]
+                    if isinstance(self.transform, Acompose)
+                    else self.transform(image)
+                )
+            else:
+                image = ToTensor()(image)
 
-        if self.target_transform:
-            label = self.target_transform(label)
+            if self.target_transform:
+                label = self.target_transform(label)
 
-        return image, label
+            return image, label
+
+        except OSError as e:
+            print(f"file with error {img_metadata_path}")
+            raise(Exception(print(e)))
