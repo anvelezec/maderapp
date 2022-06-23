@@ -21,6 +21,7 @@ class MaderappPatchesDataset(Dataset):
         img_dir,
         annotations_file,
         class_names2ids,
+        image_size,
         patches_kernel,
         patches_shuffle=None,
         transform=None,
@@ -31,6 +32,7 @@ class MaderappPatchesDataset(Dataset):
         self.transform = transform
         self.target_transform = target_transform
         self.class_names2ids = class_names2ids
+        self.image_size = image_size
         self.patches_kernel = patches_kernel
         self.patches_shuffle = patches_shuffle
 
@@ -43,7 +45,7 @@ class MaderappPatchesDataset(Dataset):
         )
 
         image = Image.open(img_metadata_path).convert("RGB")
-        tranformation = A.Compose([A.Resize(224, 224), ToTensorV2()])
+        tranformation = A.Compose([A.Resize(self.image_size, self.image_size), ToTensorV2()])
         image = tranformation(image=np.asarray(image))["image"]
         images = extract_patches(
             image=image.unsqueeze(dim=0),
@@ -75,4 +77,4 @@ class MaderappPatchesDataset(Dataset):
         if self.target_transform:
             labels = self.target_transform(labels)
 
-        return patch_images, torch.Tensor(labels)
+        return patch_images, torch.Tensor(labels).type(torch.int64)
