@@ -2,12 +2,14 @@ from pathlib import Path
 
 import pandas as pd
 import pytorch_lightning as pl
+import torch
 from albumentations.core.composition import Compose
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from torch.utils.data import DataLoader
 
 from maderapp.data import datasets
+
 
 def trainer(
     metadata: pd.DataFrame,
@@ -33,7 +35,7 @@ def trainer(
     class_names2ids = {j: i for i, j in enumerate(class_names)}
     class_ids2names = {j: i for i, j in class_names2ids.items()}
 
-    with open(f"{model_checkpoint_dir}/labels.csv", "w") as file:
+    with open(f"{model_checkpoint_dir}labels.csv", "w") as file:
         for specie, index in class_names2ids.items():
             file.write(f"{specie};{index} \n")
             
@@ -88,7 +90,7 @@ def trainer(
     # Train model
     trainer = pl.Trainer(
         accelerator=device,
-        gpus=1,
+        gpus=torch.cuda.device_count(),
         max_epochs=max_epochs,
         check_val_every_n_epoch=2,
         logger=logger,

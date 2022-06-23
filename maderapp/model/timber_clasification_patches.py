@@ -2,8 +2,9 @@ import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
 import torchmetrics
-from torch.nn import Conv2d, LeakyReLU, Linear, MaxPool2d, Module, ReLU, Sequential
-from torch.optim import StepLR
+from torch.nn import (Conv2d, LeakyReLU, Linear, MaxPool2d, Module, ReLU,
+                      Sequential)
+from torch.optim.lr_scheduler import StepLR
 
 
 class ResidualBlock(Module):

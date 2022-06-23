@@ -1,16 +1,16 @@
 import os
 from typing import Tuple
-from matplotlib import transforms
 
 import albumentations as A
 import numpy as np
-from pandas import array
 import torch
 from albumentations.core.composition import Compose as Acompose
+from albumentations.pytorch import ToTensorV2
+from matplotlib import transforms
+from pandas import array
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision.transforms import ToTensor
-from albumentations.pytorch import ToTensorV2
 
 from maderapp.utils import extract_patches
 
