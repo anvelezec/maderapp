@@ -5,5 +5,5 @@ from maderapp.data.data_patches import MaderappPatchesDataset
 datasets = {
     "basic": MaderappDataset,
     "patches": MaderappPatchesDataset,
-    "inference": MaderappDatasetInference
+    "inference": MaderappDatasetInference,
 }

@@ -28,7 +28,7 @@ def trainer(
     validation: bool,
     device: str,
     checkpoint_callback_monitor: str,
-    patches_params: dict = None
+    patches_params: dict = None,
 ):
 
     class_names = sorted(metadata.iloc[:, 1].value_counts().index)
@@ -38,7 +38,7 @@ def trainer(
     with open(f"{model_checkpoint_dir}labels.csv", "w") as file:
         for specie, index in class_names2ids.items():
             file.write(f"{specie};{index} \n")
-            
+
     if kfold is not None:
         print(f"training fold={kfold}")
         train_metadata = metadata[metadata.iloc[:, 2] != kfold]
@@ -50,10 +50,10 @@ def trainer(
 
     # Creates dataset and dataloaders
     ds_train_params = {
-        "img_dir":img_dir,
-        "annotations_file":train_metadata,
-        "class_names2ids":class_names2ids,
-        "transform":train_trans,
+        "img_dir": img_dir,
+        "annotations_file": train_metadata,
+        "class_names2ids": class_names2ids,
+        "transform": train_trans,
     }
 
     ds_val_params = {
@@ -67,7 +67,7 @@ def trainer(
         for ds_params in [ds_train_params, ds_val_params]:
             if patches_params is not None:
                 ds_params.update(**patches_params)
-    
+
     train_ds = datasets[dataset_type](**ds_train_params)
     val_ds = datasets[dataset_type](**ds_val_params)
 
