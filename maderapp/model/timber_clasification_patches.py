@@ -91,14 +91,16 @@ class TimberPatchesNet(pl.LightningModule):
         self.model = Sequential(*model)
 
     def forward(self, x: torch.Tensor):
+        x = x.reshape(-1, x.shape[2], self.patches_kernel, self.patches_kernel)
         out = self.model(x)
         out = self.softmax(out)
         return out
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=1e-2)
-        scheduler = StepLR(optimizer, step_size=500, gamma=0.1)
-        return {"optimizer": optimizer, "lr_scheduler": scheduler}
+        optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
+        return optimizer
+        #scheduler = StepLR(optimizer, step_size=500, gamma=0.1)
+        #return {"optimizer": optimizer, "lr_scheduler": scheduler}
 
     def step(self, batch, mode: str):
         x, y = batch[0], batch[1]
@@ -135,6 +137,6 @@ class TimberPatchesNet(pl.LightningModule):
         loss = self.step(batch=batch, mode="train")
         return loss
 
-    def test_step(self, batch, batch_idx, *args, **kwargs):
-        loss = self.step(batch=batch, mode="test")
+    def validation_step(self, batch, batch_idx, *args, **kwargs):
+        loss = self.step(batch=batch, mode="val")
         return loss

@@ -12,13 +12,13 @@ from maderapp.model import (
 )
 from maderapp.trainer import trainer
 
-metadata = pd.read_csv("metadata.csv", header=None)
+metadata = pd.read_csv("metadata-v3.csv", header=None)
 
 BATCH_SIZE = 128
 OUT_FEATURES = 27
-NUM_EPOCHS = 250
+NUM_EPOCHS = 100
 REQUIRE_GRAD = True
-VALIDATION = True
+VALIDATION = False
 MAX_EPOCHS = 15
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
