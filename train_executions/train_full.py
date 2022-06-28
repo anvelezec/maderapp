@@ -11,7 +11,7 @@ from maderapp.model import (
 )
 from maderapp.trainer import trainer
 
-metadata = pd.read_csv("metadata.csv", header=None)
+metadata = pd.read_csv("metadata-v3.csv", header=None)
 
 train_trans = A.Compose(
     [
@@ -40,21 +40,20 @@ val_trans = A.Compose(
 )
 
 BATCH_SIZE = 128
-OUT_FEATURES = 25
-NUM_EPOCHS = 2
+OUT_FEATURES = 27
+NUM_EPOCHS = 250
 REQUIRE_GRAD = True
 VALIDATION = True
-MAX_EPOCHS = 15
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 model = TimberMobileNet(num_classes=OUT_FEATURES)
 trainer(
     metadata=metadata,
-    img_dir="../data_maderapp/training-img",
+    img_dir="../data_maderapp/training-img-v3",
     img_dir_val="../data_maderapp/validation",
-    model_checkpoint_dir="../data_maderapp/checkpoints-v1",
-    logs_folder_dir="../data_madetapp/model_logs",
+    model_checkpoint_dir="../data_maderapp/checkpoints-v3",
+    logs_folder_dir="../data_maderapp/model_logs-v3",
     model=model,
     kfold=None,
     train_trans=train_trans,

@@ -1,16 +1,15 @@
 from pathlib import Path
 
 import albumentations as A
-import pandas as pd
-import pytorch_lightning as pl
 from albumentations.pytorch import ToTensorV2
 from torch.utils.data import DataLoader
 
 from maderapp.data.data_inference import MaderappDatasetInference
 
 
-def validator(trainer, model, model_name, class_ids2names):
-    metadata = [str(path) for path in list(Path("validation").glob("*.jpg"))]
+
+def validator(trainer, model, model_name, class_ids2names, data_path):
+    metadata = [str(path) for path in list(Path(data_path).glob("*.jpg"))]
 
     transformation = A.Compose(
         [
