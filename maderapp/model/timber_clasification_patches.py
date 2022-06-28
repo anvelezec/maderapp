@@ -2,9 +2,10 @@ import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
 import torchmetrics
-from torch.nn import Conv2d, LeakyReLU, Linear, MaxPool2d, Module, ReLU, Sequential
+from torch.nn import Conv2d, LeakyReLU, Linear, MaxPool2d, Module, ReLU, Sequential, Softmax
 from torch.optim.lr_scheduler import StepLR
 
+from maderapp.utils import extract_patches
 
 class ResidualBlock(Module):
     def __init__(self, in_channels: int, out_channels: int, kernel_size: int) -> None:
@@ -69,6 +70,7 @@ class TimberPatchesNet(pl.LightningModule):
         super().__init__()
 
         self.patches_kernel = patches_kernel
+        self.softmax = Softmax()
         self.train_acc = torchmetrics.Accuracy()
         self.test_acc = torchmetrics.Accuracy()
 
@@ -90,11 +92,18 @@ class TimberPatchesNet(pl.LightningModule):
         model.extend([self.flatten, self.linear])
         self.model = Sequential(*model)
 
+
     def forward(self, x: torch.Tensor):
-        x = x.reshape(-1, x.shape[2], self.patches_kernel, self.patches_kernel)
+        x = extract_patches(
+            image=x if x.dim() >= 4 else x.unsqueeze(dim=0),
+            channel=3,
+            kernel_height=self.patches_kernel,
+            kernel_width=self.patches_kernel,
+        )
         out = self.model(x)
         out = self.softmax(out)
         return out
+    
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
