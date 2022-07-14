@@ -1,8 +1,10 @@
 import torch
 
-from maderapp.model.timber_clasification_patches import (ActPool,
-                                                         ResidualBlock,
-                                                         TimberPatchesNet)
+from maderapp.model.timber_clasification_patches import (
+    ActPool,
+    ResidualBlock,
+    TimberPatchesNet,
+)
 
 
 def test_residual_block():
