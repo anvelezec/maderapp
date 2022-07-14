@@ -7,7 +7,6 @@ from torch.utils.data import DataLoader
 from maderapp.data.data_inference import MaderappDatasetInference
 
 
-
 def validator(trainer, model, model_name, class_ids2names, data_path):
     metadata = [str(path) for path in list(Path(data_path).glob("*.jpg"))]
 

@@ -2,10 +2,20 @@ import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
 import torchmetrics
-from torch.nn import Conv2d, LeakyReLU, Linear, MaxPool2d, Module, ReLU, Sequential, Softmax
+from torch.nn import (
+    Conv2d,
+    LeakyReLU,
+    Linear,
+    MaxPool2d,
+    Module,
+    ReLU,
+    Sequential,
+    Softmax,
+)
 from torch.optim.lr_scheduler import StepLR
 
 from maderapp.utils import extract_patches
+
 
 class ResidualBlock(Module):
     def __init__(self, in_channels: int, out_channels: int, kernel_size: int) -> None:
@@ -68,7 +78,7 @@ class LinearBlock(Module):
 class TimberPatchesNet(pl.LightningModule):
     def __init__(self, num_classes: int, patches_kernel: int) -> None:
         super().__init__()
-        
+
         self.patches_kernel = patches_kernel
         self.softmax = Softmax()
 
@@ -77,16 +87,10 @@ class TimberPatchesNet(pl.LightningModule):
 
         train_f1score = torchmetrics.F1Score(num_classes=num_classes)
         test_f1score = torchmetrics.F1Score(num_classes=num_classes)
-        
+
         self.metrics = {
-            "train": {
-                "acc" : train_acc,
-                "f1score" : train_f1score
-            },
-            "val": {
-                "acc" : test_acc,
-                "f1score" : test_f1score
-            }
+            "train": {"acc": train_acc, "f1score": train_f1score},
+            "val": {"acc": test_acc, "f1score": test_f1score},
         }
 
         self.residual_block = ResidualBlock(
@@ -104,7 +108,6 @@ class TimberPatchesNet(pl.LightningModule):
         model.extend([self.flatten, self.linear])
         self.model = Sequential(*model)
 
-
     def forward(self, x: torch.Tensor):
         x = extract_patches(
             image=x if x.dim() >= 4 else x.unsqueeze(dim=0),
@@ -115,7 +118,6 @@ class TimberPatchesNet(pl.LightningModule):
         out = self.model(x)
         out = self.softmax(out)
         return out
-    
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
@@ -123,7 +125,7 @@ class TimberPatchesNet(pl.LightningModule):
 
     def step(self, batch, mode: str):
         metrics = self.metrics[mode]
-        
+
         x, y = batch[0], batch[1]
         x = x.reshape(-1, x.shape[2], self.patches_kernel, self.patches_kernel)
         y = y.reshape(-1)

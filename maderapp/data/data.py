@@ -54,4 +54,4 @@ class MaderappDataset(Dataset):
 
         except OSError as e:
             print(f"file with error {img_metadata_path}")
-            raise(Exception(print(e)))
+            raise (Exception(print(e)))

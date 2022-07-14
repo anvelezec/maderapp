@@ -74,7 +74,9 @@ def pytorch_model_trace_to_mobile_optim(
     try:
         traced_script_module = optimize_for_mobile(traced_script_module)
     except RuntimeError as exp:
-        print(f"Mobile optimization could not be performed, with the following error: {exp}")
+        print(
+            f"Mobile optimization could not be performed, with the following error: {exp}"
+        )
     traced_script_module._save_for_lite_interpreter(save_path)
 
 

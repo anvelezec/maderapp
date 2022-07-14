@@ -45,7 +45,9 @@ class MaderappPatchesDataset(Dataset):
         )
 
         image = Image.open(img_metadata_path).convert("RGB")
-        tranformation = A.Compose([A.Resize(self.image_size, self.image_size), ToTensorV2()])
+        tranformation = A.Compose(
+            [A.Resize(self.image_size, self.image_size), ToTensorV2()]
+        )
         image = tranformation(image=np.asarray(image))["image"]
         images = extract_patches(
             image=image.unsqueeze(dim=0),
