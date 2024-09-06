@@ -31,8 +31,8 @@ from different timber species. The portable microscope acquired images with a
 magnification of 10x. No special treatment (e.g., pores filling or sanding) was
 applied to wood samples.
 
-The images to [train](https://storage.cloud.google.com/maderapp-images/training-img.zip?authuser=1)
-and [validate](https://storage.cloud.google.com/maderapp-images/validation.zip?authuser=1) and
+The images to [train](https://storage.cloud.google.com/maderapp-images/training-img.zip)
+and [validate](https://storage.cloud.google.com/maderapp-images/validation.zip) and
 its [metadata](https://storage.cloud.google.com/maderapp-images/metadata.csv?authuser=5) can be dowloaded to replicate
 the results.
 
